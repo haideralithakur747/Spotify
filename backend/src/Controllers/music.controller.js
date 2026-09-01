@@ -48,7 +48,19 @@ async function createMusic(req, res) {
 
 async function createAlbum(req, res) {
     const title = typeof req.body.title === "string" ? req.body.title.trim() : "";
-    const musics = Array.isArray(req.body.musics) ? req.body.musics : [];
+    
+    // Handle both array and single/multiple FormData values
+    // When FormData sends multiple fields with same name, ensure it's always an array
+    let musics = [];
+    if (Array.isArray(req.body.musics)) {
+        musics = req.body.musics;
+    } else if (typeof req.body.musics === "string") {
+        musics = [req.body.musics];
+    }
+    
+    // Filter out empty values
+    musics = musics.filter(Boolean);
+    
     if (!title || !musics.length) {
         return res.status(400).json({ message: "Album title and tracks are required" });
     }
@@ -111,6 +123,12 @@ async function deleteMusic(req, res) {
     res.status(200).json({ message: "Track deleted successfully" });
 }
 
+async function deleteAlbum(req, res) {
+    const album = await albumModel.findOneAndDelete({ _id: req.params.albumId, artist: req.user.id });
+    if (!album) return res.status(404).json({ message: "Album not found" });
+    res.status(200).json({ message: "Album deleted successfully" });
+}
+
 async function getAllAlbums(req, res) {
     const albums = await albumModel.find().select("title coverUri artist").populate("artist", "username").populate("musics", "title uri");
     res.status(200).json({
@@ -128,7 +146,7 @@ async function getAlbumById(req, res) {
     });
 }
 
-module.exports = { createMusic, createAlbum, getAllMusic, getMyMusic, updateMusic, deleteMusic, getAllAlbums, getAlbumById };
+module.exports = { createMusic, createAlbum, getAllMusic, getMyMusic, updateMusic, deleteMusic, deleteAlbum, getAllAlbums, getAlbumById };
 
 
 // const musicModel = require('../models/music.model');

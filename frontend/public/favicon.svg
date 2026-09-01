@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Background -->
+  <rect width="200" height="200" fill="#22191a" rx="45"/>
+  
+  <!-- Musical notes -->
+  <g fill="#e8a87c">
+    <!-- First note stem -->
+    <rect x="50" y="60" width="3" height="80" rx="1.5"/>
+    <!-- First note head -->
+    <circle cx="50" cy="145" r="12"/>
+    
+    <!-- Second note stem -->
+    <rect x="95" y="40" width="3" height="100" rx="1.5"/>
+    <!-- Second note head -->
+    <circle cx="95" cy="145" r="12"/>
+    
+    <!-- Connecting beam -->
+    <path d="M 53 60 Q 74 50 98 40 L 98 45 Q 74 55 53 65 Z" fill="#e8a87c"/>
+  </g>
+  
+  <!-- Accent circle -->
+  <circle cx="150" cy="150" r="20" fill="none" stroke="#d4956e" stroke-width="2" opacity="0.6"/>
+</svg>
